@@ -1,8 +1,12 @@
 import { useMemo } from 'react';
 import PropTypes from 'prop-types';
 
+import createTheme from "@mui/material/styles/createTheme";
+// eslint-disable-next-line perfectionist/sort-imports
+import { ThemeProvider as MUIThemeProvider } from '@mui/material/styles';
+
+// eslint-disable-next-line perfectionist/sort-imports
 import CssBaseline from '@mui/material/CssBaseline';
-import { createTheme, ThemeProvider as MUIThemeProvider } from '@mui/material/styles';
 
 import { palette } from './palette';
 import { shadows } from './shadows';

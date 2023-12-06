@@ -1,7 +1,6 @@
 import { lazy, Suspense } from 'react';
 import { Outlet, useRoutes } from 'react-router-dom';
 
-import PositionPage from 'src/pages/position';
 import { useAuth } from 'src/context/AuthContext';
 import DashboardLayout from 'src/layouts/dashboard';
 
@@ -9,6 +8,7 @@ export const IndexPage = lazy(() => import('src/pages/app'));
 export const UserPage = lazy(() => import('src/pages/user'));
 export const LoginPage = lazy(() => import('src/pages/login'));
 export const VotePage = lazy(() => import('src/pages/vote'));
+export const PositionPage = lazy(()=>import('src/pages/position'));
 export const Page404 = lazy(() => import('src/pages/page-not-found'));
 
 // ----------------------------------------------------------------------
