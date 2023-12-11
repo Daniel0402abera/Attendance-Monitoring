@@ -6,15 +6,15 @@
 /* eslint-disable spaced-comment */
 /* eslint-disable import/extensions */
 /* eslint-disable import/no-unresolved */
-import React, { useMemo, useState } from "react";
+import React, { useMemo, useState } from 'react';
 /* eslint-disable import/no-extraneous-dependencies */
 import {
   MRT_EditActionButtons,
   MaterialReactTable,
   useMaterialReactTable,
-} from "material-react-table";
+} from 'material-react-table';
 
-import EditIcon from "@mui/icons-material/Edit";
+import EditIcon from '@mui/icons-material/Edit';
 import {
   Box,
   Button,
@@ -22,36 +22,48 @@ import {
   DialogContent,
   DialogTitle,
   IconButton,
+  TextField,
   Tooltip,
   Typography,
-} from "@mui/material";
+} from '@mui/material';
 
-import { useGet } from "../../../service/useGet";
-import {usePost } from "../../../service/usePost";
+import { useGet } from '../../../service/useGet';
+import AddManagerModal from '../AddManagerModal';
+import { usePost } from '../../../service/usePost';
 // import { validateUser } from "../utils/validation";
-import { useUpdate } from "../../../service/useUpdate";
-import { useDelete } from "../../../service/useDelete";
-
+import { useUpdate } from '../../../service/useUpdate';
+import { useDelete } from '../../../service/useDelete';
 
 function UserPage() {
   const [validationErrors, setValidationErrors] = useState({});
+  const [open, setOpen] = React.useState(false);
+  const [fullName, setFullName] = React.useState('');
+  const [username, setuserName] = React.useState('');
+  const [password, setPassword] = React.useState('');
 
-  const {
-    data: roles,
-  } = useGet("/api/v1/roles");
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+
+  const { data: roles } = useGet('/api/v1/roles');
   const roleNames = roles?.map((role) => role.roleName);
 
   const columns = useMemo(
     () => [
       {
-        accessorKey: "userId",
-        header: "Id",
+        accessorKey: 'userId',
+        header: 'Id',
         enableEditing: false,
         size: 80,
       },
       {
-        accessorKey: "fullName",
-        header: "Full Name",
+        accessorKey: 'fullName',
+        header: 'Full Name',
         muiEditTextFieldProps: {
           required: true,
           error: !!validationErrors?.fullName,
@@ -66,10 +78,10 @@ function UserPage() {
         },
       },
       {
-        accessorKey: "username",
-        header: "Email",
+        accessorKey: 'username',
+        header: 'user Name / Email',
         muiEditTextFieldProps: {
-          type: "email",
+          type: 'email',
           required: true,
           error: !!validationErrors?.email,
           helperText: validationErrors?.email,
@@ -82,37 +94,34 @@ function UserPage() {
         },
       },
       {
-        accessorKey: "role",
-        header: "Role",
+        accessorKey: 'role',
+        header: 'Role',
 
-        editVariant: "select",
+        editVariant: 'select',
         editSelectOptions: roleNames,
         muiEditTextFieldProps: {
           select: true,
           error: !!validationErrors?.role,
           helperText: validationErrors?.role,
         },
-        
       },
       {
-        accessorKey: "lastLoggedIn",
-        header: "Last LoggedIn",
+        accessorKey: 'lastLoggedIn',
+        header: 'Last LoggedIn',
         enableEditing: false,
-        Cell: ({ cell }) =>cell?.getValue()?.split("T")[0],
-  
+        Cell: ({ cell }) => cell?.getValue()?.split('T')[0],
       },
       {
-        accessorKey: "createdAt",
-        header: "CreatedAt",
+        accessorKey: 'createdAt',
+        header: 'CreatedAt',
         enableEditing: false,
-        Cell: ({ cell }) =>cell?.getValue()?.split("T")[0],
+        Cell: ({ cell }) => cell?.getValue()?.split('T')[0],
       },
       {
-        accessorKey: "updatedAt",
-        header: "updatedAt",
+        accessorKey: 'updatedAt',
+        header: 'updatedAt',
         enableEditing: false,
-        Cell: ({ cell }) =>cell.getValue().split("T")[0],
-        
+        Cell: ({ cell }) => cell.getValue().split('T')[0],
       },
     ],
     [roleNames, validationErrors]
@@ -126,7 +135,7 @@ function UserPage() {
     isError: isLoadingUsersError,
     isFetching: isFetchingUsers,
     isLoading: isLoadingUsers,
-  } = useGet("/api/v1/users");
+  } = useGet('/api/v1/users');
   // eslint-disable-next-line spaced-comment
   //call read hook of role api
 
@@ -137,8 +146,7 @@ function UserPage() {
   const { isPending: isDeletingUser } = useDelete();
 
   //CREATE action
-  const handleCreateUser = async ({ values, table }) => {
-    
+  const handleCreateUser = async ({ values }) => {
     // const newValidationErrors = validateUser(values);
     // if (Object.values(newValidationErrors).some((error) => error)) {
     //   setValidationErrors(newValidationErrors);
@@ -147,12 +155,16 @@ function UserPage() {
     // setValidationErrors({});
 
     const transformedData = {
-      "password": "123456", // Replace with the actual password value
-      "roleName": values.role,
-      "fullName": values.fullName,
-      "username": values.username
-  };
+      password,
+      fullName,
+      username,
+    };
+
+    console.log(transformedData);
     await createUser(transformedData);
+    setFullName('')
+    setuserName('')
+    setPassword('')
     table.setCreatingRow(null); //exit creating mode
   };
 
@@ -164,33 +176,32 @@ function UserPage() {
     //   return;
     // }
     // setValidationErrors({});
-   const data = {
-    "fullName": values.fullName
-}
-    
+
+    const data = {
+      fullName: values?.fullName,
+    };
+
     await updateUser(data);
     table.setEditingRow(null); //exit editing mode
   };
 
-  
-
   const table = useMaterialReactTable({
     columns,
     data: fetchedUsers || [],
-    createDisplayMode: "modal", 
-    editDisplayMode: "modal", 
+    createDisplayMode: 'modal',
+    editDisplayMode: 'modal',
     enableEditing: true,
-    positionActionsColumn: "last",
+    positionActionsColumn: 'last',
     getRowId: (row) => row.id,
     muiToolbarAlertBannerProps: isLoadingUsersError
       ? {
-          color: "error",
-          children: "Error loading data",
+          color: 'error',
+          children: 'Error loading data',
         }
       : undefined,
     muiTableContainerProps: {
       sx: {
-        minHeight: "500px",
+        minHeight: '500px',
       },
     },
     onCreatingRowCancel: () => setValidationErrors({}),
@@ -200,10 +211,36 @@ function UserPage() {
     renderCreateRowDialogContent: ({ table, row, internalEditComponents }) => (
       <>
         <DialogTitle variant="h5">Create New User</DialogTitle>
-        <DialogContent
-          sx={{ display: "flex", flexDirection: "column", gap: "1rem" }}
-        >
-          {internalEditComponents} {/* or render custom edit components here */}
+        <DialogContent sx={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+          <TextField
+            style={{ marginTop: '10px' }}
+            id="outlined-controlled"
+            label="Name"
+            value={fullName}
+            onChange={(event) => {
+              setFullName(event.target.value);
+            }}
+          />
+          <TextField
+            style={{ marginTop: '10px' }}
+            id="outlined-controlled"
+            label="username"
+            value={username}
+            onChange={(event) => {
+              setuserName(event.target.value);
+            }}
+          />
+
+          <TextField
+            type="password"
+            style={{ marginTop: '10px' }}
+            id="outlined-controlled"
+            label="password"
+            value={password}
+            onChange={(event) => {
+              setPassword(event.target.value);
+            }}
+          />
         </DialogContent>
         <DialogActions>
           <MRT_EditActionButtons variant="text" table={table} row={row} />
@@ -214,9 +251,7 @@ function UserPage() {
     renderEditRowDialogContent: ({ table, row, internalEditComponents }) => (
       <>
         <DialogTitle variant="h3">Edit User</DialogTitle>
-        <DialogContent
-          sx={{ display: "flex", flexDirection: "column", gap: "1.5rem" }}
-        >
+        <DialogContent sx={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
           {internalEditComponents}
         </DialogContent>
         <DialogActions>
@@ -225,25 +260,45 @@ function UserPage() {
       </>
     ),
     renderRowActions: ({ row, table }) => (
-      <Box sx={{ display: "flex", gap: "1rem" }}>
+      <Box sx={{ display: 'flex', gap: '1rem' }}>
         <Tooltip title="Edit">
           <IconButton onClick={() => table.setEditingRow(row)}>
             <EditIcon />
           </IconButton>
         </Tooltip>
-      
       </Box>
     ),
     renderTopToolbarCustomActions: ({ table }) => (
-      <Button
-        variant="contained"
-        style={{width:'10%', margin:'5px', padding:'10px',backgroundColor:"green",color:'white'}}
-        onClick={() => {
-          table.setCreatingRow(true); 
-        }}
-      >
-        Create New User
-      </Button>
+      <>
+        <Button
+          variant="contained"
+          style={{
+            width: '10%',
+            margin: '5px',
+            padding: '10px',
+            backgroundColor: 'green',
+            color: 'white',
+          }}
+          onClick={() => {
+            table.setCreatingRow(true);
+          }}
+        >
+          Create New User
+        </Button>
+        <Button
+          variant="contained"
+          style={{
+            width: '10%',
+            margin: '5px',
+            padding: '10px',
+            backgroundColor: 'green',
+            color: 'white',
+          }}
+          onClick={handleClickOpen}
+        >
+          Add manager
+        </Button>
+      </>
     ),
 
     state: {
@@ -254,15 +309,17 @@ function UserPage() {
     },
   });
 
-  return (<>
-  <Typography variant="h4" sx={{ mb: 5 }}>
+  return (
+    <>
+      <Typography variant="h4" sx={{ mb: 5 }}>
         User List
       </Typography>
-      <MaterialReactTable table={table} />
-  </>)
-  
+      
+      <AddManagerModal open={open} handleClose={handleClose} />
 
-   
+      <MaterialReactTable table={table} />
+    </>
+  );
 }
 
 export default UserPage;

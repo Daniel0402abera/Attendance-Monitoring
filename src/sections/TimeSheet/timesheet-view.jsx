@@ -87,22 +87,10 @@ function TimesheetPage() {
         enableEditing: false,
         size: 80,
       },
-      {
-        accessorKey: 'userId',
-        header: 'userId',
-        muiEditTextFieldProps: {
-          required: true,
-          error: !!validationErrors?.fullName,
-          helperText: validationErrors?.fullName,
-          // remove any previous validation errors when user focuses on the input
-          onFocus: () =>
-            setValidationErrors({
-              ...validationErrors,
-              firstName: undefined,
-            }),
-          // optionally add validation checking for onBlur or onChange
-        },
-      },
+      // {
+      //   accessorKey: 'userId',
+      //   header: 'userId',
+      // },
       {
         accessorKey: 'status',
         header: 'status',
@@ -122,7 +110,7 @@ function TimesheetPage() {
       {
         accessorKey: 'approved',
         header: 'approved',
-        Cell: ({ cell }) => cell === true ?"TRUE":"FALSE",
+        Cell: ({ cell }) => cell.getValue() === true ?"TRUE":"FALSE",
       },
       {
         accessorKey: 'date',
@@ -358,8 +346,8 @@ function TimesheetPage() {
     >
       Create Time Sheet 
     </Button>:""}
-      
-        <FormControl sx={{ m: 1, minWidth: 120 }}>
+    {userRole === 'USER'? <>
+    <FormControl sx={{ m: 1, minWidth: 120 }}>
             <InputLabel id="demo-simple-select-helper-label">Team</InputLabel>
             <Select
               labelId="demo-simple-select-helper-label"
@@ -375,8 +363,6 @@ function TimesheetPage() {
               ))}
             </Select>
           </FormControl>
-      
-     <AddTimeSheetMOdal open={open} handleClose={handleClose} />
       {/* <MaterialReactTable table={table} /> */}
 
       <Stack sx={{ m: '2rem 0' }}>
@@ -432,6 +418,9 @@ function TimesheetPage() {
       </TableContainer>
       <MRT_ToolbarAlertBanner stackAlertBanner table={table} />
     </Stack>
+    </>:""}
+    <AddTimeSheetMOdal open={open} handleClose={handleClose} />
+        
     </>
   );
 }

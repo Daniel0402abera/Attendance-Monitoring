@@ -118,7 +118,7 @@ function AddToTeam() {
   const {
     data: fetchedUsers,
     isError: isLoadingUsersError,
-  } = useGet('/api/v1/users');
+  } = useGet('/api/v1/users?role=USER');
   // eslint-disable-next-line spaced-comment
   //call read hook of role api
 
