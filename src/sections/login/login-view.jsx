@@ -89,7 +89,9 @@ export default function LoginView() {
     if (user && Role === 'ADMIN') {
       router.push('/dashboard');
     } else if (user && Role === 'USER') {
-      router.push('/dashboard');
+      router.push('/dashboard/timesheet');
+    }else if (user && Role === 'MANAGER') {
+      router.push('/dashboard/approve-timesheet');
     }
   }, [Role, router, user]);
 

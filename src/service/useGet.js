@@ -1,5 +1,5 @@
 // useGet.js
-import { toast } from "react-toastify";
+// import { toast } from "react-toastify";
 import { useQuery } from "@tanstack/react-query";
 
 import api from "./api";
@@ -27,9 +27,10 @@ export function useGet(endpoint) {
           throw new Error(`Server Error: ${response.status}`);
         }
       } catch (error) {
-        toast.error(error.message, {
-          position: toast.POSITION.TOP_RIGHT,
-        });
+        console.log(error)
+        // toast.error(error.message, {
+        //   position: toast.POSITION.TOP_RIGHT,
+        // });
       }
     },
     refetchOnWindowFocus: false,

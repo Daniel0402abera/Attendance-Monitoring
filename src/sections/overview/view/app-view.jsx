@@ -18,18 +18,15 @@ export default function AppView() {
   const { data: user, isFetching: isFetchingUsers } = useGet('/api/v1/users');
   const { data: positions, isFetching: isFetchingPosition } = useGet('/api/v1/positions');
   const { data: candidate, isFetching: isFetchingCandidate } = useGet('/api/v1/candidates');
-  const { data: results, isFetching: isFetchingResults } = useGet(
-    `api/v1/votes/results/${positionId}`
-  );
 
   const TotalUser = user?.length;
   const TotalPosition = positions?.length;
   const TotalCandidate = candidate?.length;
 
-  const transformedData = results?.map((item) => ({
-    label: item?.candidateName,
-    value: item?.voteCount,
-  }));
+  // const transformedData = results?.map((item) => ({
+  //   label: item?.candidateName,
+  //   value: item?.voteCount,
+  // }));
 
   return (
     <Container maxWidth="xl">
@@ -124,7 +121,14 @@ export default function AppView() {
             </Select>
             <FormHelperText>Select position to see latest position results</FormHelperText>
           </FormControl>
-          {isFetchingResults ? (
+          <Skeleton variant="rounded" style={{ marginTop: '50px' }} width={700} height={300}>
+              <AppCurrentVisits
+                chart={{
+                  series: [],
+                }}
+              />
+            </Skeleton>
+          {/* {false ? (
             <Skeleton variant="rounded" style={{ marginTop: '50px' }} width={700} height={300}>
               <AppCurrentVisits
                 chart={{
@@ -139,7 +143,7 @@ export default function AppView() {
                 series: transformedData,
               }}
             />
-          )}
+          )} */}
         </Grid>
       </Grid>
     </Container>
