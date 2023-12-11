@@ -8,7 +8,7 @@ export default function LoginPage() {
   return (
     <>
       <Helmet>
-        <title> Login | Election </title>
+        <title> Login | Attendance </title>
       </Helmet>
 
       <LoginView />

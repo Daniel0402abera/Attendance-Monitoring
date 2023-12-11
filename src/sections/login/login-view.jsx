@@ -37,7 +37,7 @@ export default function LoginView() {
   const router = useRouter();
 
   const [showPassword, setShowPassword] = useState(false);
-  const [email, setEmail] = useState(null);
+  const [username, setUserName] = useState(null);
   const [password, setPassword] = useState(null);
 
   const { mutate: loginMutation, isPending } = useMutation({
@@ -99,7 +99,7 @@ export default function LoginView() {
     event.preventDefault();
 
     loginMutation({
-      username: email,
+      username,
       password,
     });
   };
@@ -107,7 +107,7 @@ export default function LoginView() {
   const renderForm = (
     <>
       <Stack spacing={4}>
-        <TextField name="email" onChange={(e) => setEmail(e.target.value)} label="Email address" />
+        <TextField name="username" onChange={(e) => setUserName(e.target.value)} label="User Name / Email" />
         <TextField
           name="password"
           label="Password"
@@ -163,7 +163,7 @@ export default function LoginView() {
           }}
         >
           <Typography style={{ marginBottom: '30px' }} variant="h4">
-            Sign in to Online Election
+            Sign in to Attendance System
           </Typography>
           {renderForm}
         </Card>
