@@ -6,8 +6,8 @@ This repository contains the frontend codebase for the Attendance Tracking appli
 ## Prerequisites
 
 - Node.js and npm installed on your system.
-- Basic knowledge of React and Docker.
-- Access to the Store Management backend API (local or deployed).
+- Basic knowledge of React.
+- Access to the Attendance Monitoring backend API (local or deployed).
 
 ## Configuration Options:
 ## Backend Configuration:
