@@ -35,7 +35,7 @@ This repository contains the frontend codebase for the Attendance Tracking appli
 
 
 ## Access the App
-Once the containers are up and running, you can access the Store Management app by opening your web browser and visiting http://localhost:3030.
+Once the containers are up and running, you can access the Attendance Management app by opening your web browser and visiting http://localhost:3030.
 
 ## For Login use defualt admin 
 
