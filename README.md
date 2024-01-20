@@ -1,6 +1,6 @@
 ## Attendance Monitoring or Tracker Frontend React App
 
-This repository contains the frontend codebase for the Attendance Tracking application. The app can be configured to connect to either a local backend server or a deployed server. Additionally, instructions for running the app from local is provided and also can use deployed endpoint
+This repository contains the frontend codebase at the main branch and the backend branch has the backend codebase  for the Attendance Tracking application. The app can be configured to connect to either a local backend server or a deployed server. Additionally, instructions for running the app locally is provided, and also can use deployed endpoint
 
 
 ## Prerequisites
